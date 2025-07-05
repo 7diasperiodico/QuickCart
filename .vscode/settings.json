@@ -1,0 +1,22 @@
+{
+    "git.ignoredRepositories":[
+        "**/node_modules",
+        "**/.next",
+        "**/.dist",
+        "**/.git",
+        "**/build"
+    ],
+    "search.exclude": {
+        "**/node_modules": true,  
+        "**/.next": true,
+        "**/dist": true,
+        "**/build": true
+    },
+    "files.watcherExclude": {
+    "**/node_modules/**": true,
+        "**/.next/**": true,
+        "**/.dist/**": true,
+        "**/.git/**": true,
+        "**/build/**": true
+      }
+    }
