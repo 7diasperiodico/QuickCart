@@ -2,17 +2,23 @@ import { Inngest } from "inngest";
 import connectDB from "./db";
 import User from "@/models/User";
 
-// Crear cliente de Inngest
+// Create a client to send and receive events
 export const inngest = new Inngest({ id: "quickart-next" });
 
-// Crear usuario
+/* ───── Crear usuario ───── */
 export const syncUserCreation = inngest.createFunction(
   { id: "sync-user-from-clerk" },
   { event: "clerk/user.created" },
   async ({ event }) => {
     if (!event?.data) return;
 
-    const { id, first_name, last_name, email_addresses, image_url } = event.data;
+    const {
+      id,
+      first_name,
+      last_name,
+      email_addresses,
+      image_url
+    } = event.data;
 
     const userData = {
       _id: id,
@@ -20,8 +26,8 @@ export const syncUserCreation = inngest.createFunction(
         email_addresses && email_addresses.length > 0
           ? email_addresses[0].email
           : "",
-      name: `${first_name} ${last_name}`,
-      imageUrl: image_url,
+      name: `${first_name ?? ""} ${last_name ?? ""}`,
+      imageUrl: image_url ?? ""
     };
 
     await connectDB();
@@ -29,14 +35,20 @@ export const syncUserCreation = inngest.createFunction(
   }
 );
 
-// Actualizar usuario
+/* ───── Actualizar usuario ───── */
 export const syncUserUpdation = inngest.createFunction(
   { id: "update-user-from-clerk" },
   { event: "clerk/user.updated" },
   async ({ event }) => {
     if (!event?.data) return;
 
-    const { id, first_name, last_name, email_addresses, image_url } = event.data;
+    const {
+      id,
+      first_name,
+      last_name,
+      email_addresses,
+      image_url
+    } = event.data;
 
     const userData = {
       _id: id,
@@ -44,8 +56,8 @@ export const syncUserUpdation = inngest.createFunction(
         email_addresses && email_addresses.length > 0
           ? email_addresses[0].email
           : "",
-      name: `${first_name} ${last_name}`,
-      imageUrl: image_url,
+      name: `${first_name ?? ""} ${last_name ?? ""}`,
+      imageUrl: image_url ?? ""
     };
 
     await connectDB();
@@ -53,7 +65,7 @@ export const syncUserUpdation = inngest.createFunction(
   }
 );
 
-// Eliminar usuario
+/* ───── Eliminar usuario ───── */
 export const syncUserDeletion = inngest.createFunction(
   { id: "delete-user-with-clerk" },
   { event: "clerk/user.deleted" },
